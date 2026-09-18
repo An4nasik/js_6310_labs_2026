@@ -20,7 +20,8 @@ function simpleTask() {
 // ===== ЗАДАНИЕ 2: Функции =====
 function getReviewerNumber(number, lab) {
     // 2.1 Функция определяющая номер ревьюера для вашей группы по вашему номеру и номеру лабораторной работы
-    return (number + lab) % 30;
+    const reviewer = (number + lab) % 30;
+    return reviewer === 0 ? reviewer + 1 : reviewer;
 }
 
 function getVariant(number, variants) {
@@ -409,7 +410,7 @@ function runTests() {
     console.log("\n--- Задание 2: Функции ---");
     console.assert(getReviewerNumber(5, 1) === 6, "Тест получения ревьюера провален");
     console.assert(getReviewerNumber(20, 1) === 21, "Ревьювер для студента 20 лаба 1 должен быть 21");
-    console.assert(getReviewerNumber(29, 1) === 0, "При переполнении должен быть 0");
+    console.assert(getReviewerNumber(29, 1) === 1, "При переполнении должен быть 1");
     console.log("getReviewerNumber: ок");
 
     console.assert(getVariant(20, 4) === 4, "Вариант для студента 20 при 4 вариантах должен быть 4");
