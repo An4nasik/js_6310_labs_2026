@@ -1,4 +1,4 @@
-import { describe, test, expect, jest } from '@jest/globals';
+import { describe, test, expect, jest, beforeEach } from '@jest/globals';
 
 let botInstances = [];
 let messageHandlers = [];
@@ -21,6 +21,10 @@ const { default: runTelegramBot } = await import('../src/bots/telegramBot');
 const { default: TelegramBot } = await import('node-telegram-bot-api');
 
 describe('runTelegramBot', () => {
+  beforeEach(() => {
+    process.env.TELEGRAM_BOT_TOKEN = 'test-token';
+  });
+
   test('creates a Telegram bot instance and subscribes to events', () => {
     runTelegramBot();
     expect(TelegramBot).toHaveBeenCalled();
@@ -32,5 +36,16 @@ describe('runTelegramBot', () => {
     cb({ chat: { id: 1 }, text: '/start' });
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(bot.sendMessage).toHaveBeenCalledWith(1, 'Привет! Я твой первый бот!');
+  });
+
+  test('does not use onText subscription', () => {
+    expect(botInstances[0].onText).not.toHaveBeenCalled();
+  });
+
+  test('skips bot creation when token is missing', () => {
+    process.env.TELEGRAM_BOT_TOKEN = '';
+    const countBefore = botInstances.length;
+    runTelegramBot();
+    expect(botInstances.length).toBe(countBefore);
   });
 });
