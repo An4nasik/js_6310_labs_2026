@@ -1,78 +1,66 @@
 'use strict';
 
-function toggleComicTheme() {
-    const body = document.body;
-    const isEnabled = !body.classList.contains('comic-theme-active');
-    
-    // 1. Сохраняем состояние (localStorage)
-    localStorage.setItem('comicThemeEnabled', isEnabled);
-    
-    if (isEnabled) {
-        body.classList.add('comic-theme-active');
+(function () {
+    const storageKey = 'comicThemeEnabled';
+    const buttonId = 'comic-toggle-btn';
+
+    function applyTheme(enabled) {
+        document.body.classList.toggle('comic-theme-active', enabled);
+
+        const wrapper = document.getElementById('page_wrapper');
+        if (wrapper) {
+            wrapper.classList.toggle('comic-box', enabled);
+        }
+
+        const blocks = document.querySelectorAll('#page_wrapper .news_box, #page_wrapper .box_items');
+        blocks.forEach(block => {
+            block.classList.toggle('comic-box', enabled);
+            if (block.parentElement) {
+                block.parentElement.classList.toggle('comic-section', enabled);
+            }
+        });
+
+        const footer = document.querySelector('footer');
+        if (footer) {
+            for (const child of footer.children) {
+                child.classList.toggle('comic-footer', enabled);
+            }
+        }
+
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.textContent = enabled ? 'Вкл' : 'Выкл';
+            button.title = enabled ? 'Comic Sans: включён' : 'Comic Sans: выключен';
+            button.setAttribute('aria-label', button.title);
+            button.setAttribute('aria-pressed', String(enabled));
+        }
+    }
+
+    function toggleTheme() {
+        const enabled = !document.body.classList.contains('comic-theme-active');
+        localStorage.setItem(storageKey, String(enabled));
+        applyTheme(enabled);
+    }
+
+    function init() {
+        if (document.getElementById(buttonId)) {
+            return;
+        }
+
+        const button = document.createElement('button');
+        button.id = buttonId;
+        button.type = 'button';
+        button.addEventListener('click', toggleTheme);
+
+        const links = document.querySelector('.box.cf .box_links');
+        const container = links || document.body;
+        container.appendChild(button);
+        applyTheme(localStorage.getItem(storageKey) === 'true');
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init, { once: true });
     } else {
-        body.classList.remove('comic-theme-active');
+        init();
     }
-
-    // 2. getElementById
-    const pageWrapper = document.getElementById('page_wrapper') || document.getElementById('wrapper');
-    if (pageWrapper) {
-        pageWrapper.classList.toggle('comic-box', isEnabled);
-    }
-
-    // 3. querySelector
-    const mainSlider = document.querySelector('.main_slider_holder') || document.querySelector('.header');
-    if (mainSlider) {
-        mainSlider.classList.toggle('comic-rotate', isEnabled);
-    }
-
-    // 4. querySelectorAll (сложный селектор) и parentElement
-    const textBlocks = document.querySelectorAll('div.news_box .news-item, .page-content p, .info-block');
-    textBlocks.forEach(item => {
-        item.classList.toggle('comic-box', isEnabled);
-        
-        if (item.parentElement) {
-            item.parentElement.classList.toggle('comic-box', isEnabled);
-        }
-    });
-
-    // 5. children
-    const footer = document.querySelector('footer') || document.querySelector('.footer');
-    if (footer && footer.children) {
-        for (let i = 0; i < footer.children.length; i++) {
-            footer.children[i].classList.toggle('comic-box', isEnabled);
-        }
-    }
-
-    // Обновляем текст кнопки
-    const btn = document.getElementById('comic-toggle-btn');
-    if (btn) {
-        btn.textContent = isEnabled ? '🤡 Выключить Comic Sans' : '🖍 Включить Comic Sans';
-    }
-}
-
-function initPlugin() {
-    // Создаем кнопку переключения
-    const button = document.createElement('button');
-    button.id = 'comic-toggle-btn';
-    
-    // Восстанавливаем состояние при загрузке
-    const isEnabled = localStorage.getItem('comicThemeEnabled') === 'true';
-    button.textContent = isEnabled ? '🤡 Выключить Comic Sans' : '🖍 Включить Comic Sans';
-    
-    button.addEventListener('click', toggleComicTheme);
-    document.body.appendChild(button);
-
-    // Применяем сохраненную тему
-    if (isEnabled) {
-        // Мы уже добавили класс на body выше? Нет, давайте применим всё
-        // Временный хак: ставим false в localStorage, чтобы toggleComicTheme переключил в true
-        localStorage.setItem('comicThemeEnabled', 'false'); 
-        toggleComicTheme();
-    }
-}
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPlugin);
-} else {
-    initPlugin();
-}
+})();
