@@ -1,0 +1,64 @@
+{
+  "project": "Lab4 Student20",
+  "branchName": "student-20-lab4",
+  "description": "Библиотека чата и панели источников с локальным демо",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Подготовка проектов",
+      "description": "Подготовка проектов",
+      "acceptanceCriteria": [
+        "Два ES-module проекта со scripts из примера",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": "Два проекта, lock-файлы, lint/build/dev проверены. Все версии в диапазонах примера."
+    },
+    {
+      "id": "US-002",
+      "title": "Окно чата",
+      "description": "Окно чата",
+      "acceptanceCriteria": [
+        "Сообщения двух ролей, ввод и отправка, индикатор набора",
+        "Пробельный ввод и повторная отправка блокируются",
+        "Tests pass",
+        "Verify in browser using dev-browser skill (browser-use fallback)",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": true,
+      "notes": "Red: отсутствует ChatWindow; Green: пользовательские сценарии проходят. Проверено в браузере 1440/390 px."
+    },
+    {
+      "id": "US-003",
+      "title": "Панель источников",
+      "description": "Панель источников",
+      "acceptanceCriteria": [
+        "Фрагменты, релевантность, ссылки и пустое состояние",
+        "Coverage >= 90% по всем столбцам",
+        "Tests pass",
+        "Verify in browser using dev-browser skill (browser-use fallback)",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": true,
+      "notes": "Red: отсутствует SourcesPanel; Green: тесты проходят, покрытие 100/100/100/100. Проверено в браузере."
+    },
+    {
+      "id": "US-004",
+      "title": "Приложение и документация",
+      "description": "Приложение и документация",
+      "acceptanceCriteria": [
+        "Локальный ответ и обновление источников; неизвестная тема",
+        "README со скриншотом и инструкциями",
+        "Tests pass",
+        "Verify in browser using dev-browser skill (browser-use fallback)",
+        "Typecheck passes"
+      ],
+      "priority": 4,
+      "passes": true,
+      "notes": "Red: отсутствует App; Green: 9 тестов приложения, lint/build и браузерный сценарий 1440/390 px. README и скриншоты готовы."
+    }
+  ]
+}
