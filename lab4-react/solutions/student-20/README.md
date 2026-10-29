@@ -5,7 +5,6 @@
 
 - `ui-library` — библиотека `@my-app/ui-library`, сборка ES-модуля, CSS и TypeScript-деклараций.
 - `frontend` — приложение на Vite, которое импортирует собранную библиотеку через локальную зависимость.
-- `tasks/prd-chat-sources.md`, `prd.json`, `progress.txt` — требования и этапы выполнения.
 
 ## Запуск
 Проверено на Node.js 24.19.0 и npm 11.17.0. Нужен Node.js, совместимый с Vite 7 (20.19+ или 22.12+). Команды выполнять из папки `lab4-react/solutions/student-20`.
@@ -73,8 +72,6 @@ npm run test:coverage -- --runInBand
 ```
 
 Дополнительно доступна команда `npm run lint:fix`. Отчёт покрытия: `coverage/lcov-report/index.html` внутри соответствующего проекта. Для `SourcesPanel` в Jest закреплён порог 90% по statements, branches, functions и lines.
-
-Результаты: [docs/verification.md](docs/verification.md).
 
 ### Ручная проверка
 1. Открыть приложение и ввести только пробелы: отправка недоступна.
